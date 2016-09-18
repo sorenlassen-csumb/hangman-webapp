@@ -4,10 +4,14 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
+import org.glassfish.jersey.test.DeploymentContext;
 import org.glassfish.jersey.test.JerseyTest;
+import org.glassfish.jersey.test.ServletDeploymentContext;
+import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
+import org.glassfish.jersey.test.spi.TestContainerFactory;
 import org.junit.*;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
 /**
@@ -19,8 +23,20 @@ public class HangmanResourceTest extends JerseyTest {
     static private final String WORD = "cat";  // the word used in this test
 
     @Override
-    protected Application configure() {
-        return new ResourceConfig(HangmanResource.class);
+    protected DeploymentContext configureDeployment() {
+        return ServletDeploymentContext
+                   .builder(new ResourceConfig(HangmanResource.class))
+                   .initParam(ServerProperties.PROVIDER_PACKAGES,
+                              this.getClass().getPackage().getName())
+                   .build();
+    }
+
+    @Override
+    protected TestContainerFactory getTestContainerFactory() {
+        // GrizzlyWebTestContainerFactory supports Servlet deployment contexts,
+        // i.e. the @Context annotations in HangmanResource. See:
+        // https://jersey.java.net/documentation/latest/test-framework.html#d0e17451
+        return new GrizzlyWebTestContainerFactory();
     }
 
     // setup() and teardown() are copied from
