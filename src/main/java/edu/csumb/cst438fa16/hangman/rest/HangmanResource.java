@@ -29,7 +29,7 @@ public class HangmanResource {
 
     @GET
     @Path("/start")
-    public String start(/*@Context ServletContext context*/) {
+    public String start() {
         context.log("start called");
         String pattern = getHangman().start();
         context.log("start returns OK: " + pattern);
@@ -42,7 +42,6 @@ public class HangmanResource {
         @QueryParam("oldPattern") String oldPattern,
         @QueryParam("oldGuesses") String oldGuesses,
         @QueryParam("newGuesses") String newGuesses
-	//,@Context ServletContext context
     ) {
         context.log("match called with oldPattern=" + oldPattern
                                    + " oldGuesses=" + oldGuesses
