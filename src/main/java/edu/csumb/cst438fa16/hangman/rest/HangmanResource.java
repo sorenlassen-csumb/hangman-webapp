@@ -18,10 +18,12 @@ import javax.ws.rs.core.Response;
  */
 @Path("")
 public class HangmanResource {
+    static final String HANGMAN_WORD_DEFAULT = "cat";
     static final String HANGMAN_WORD_PROPERTY_KEY = "hangman.word";
 
     private static Hangman getHangman() {
-        String word = System.getProperty(HANGMAN_WORD_PROPERTY_KEY);
+        String word = System.getProperty(HANGMAN_WORD_PROPERTY_KEY,
+                                         HANGMAN_WORD_DEFAULT);
         return new Hangman(word);
     }
 
