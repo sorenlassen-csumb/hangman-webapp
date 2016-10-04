@@ -3,11 +3,9 @@ package edu.csumb.cst438fa16.hangman.rest;
 import edu.csumb.cst438fa16.hangman.Hangman;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 /**
@@ -27,14 +25,10 @@ public class HangmanResource {
         return new Hangman(word);
     }
 
-    @Context ServletContext context;
-
     @GET
     @Path("/start")
     public String start() {
-        context.log("start called");
         String pattern = getHangman().start();
-        context.log("start returns OK: " + pattern);
         return pattern;
     }
 
@@ -45,16 +39,12 @@ public class HangmanResource {
         @QueryParam("oldGuesses") String oldGuesses,
         @QueryParam("newGuesses") String newGuesses
     ) {
-        context.log("match called with oldPattern=" + oldPattern
-                                   + " oldGuesses=" + oldGuesses
-                                   + " newGuesses=" + newGuesses);
         List<String> missing = new ArrayList<>();
         if (oldPattern == null) missing.add("oldPattern");
         if (oldGuesses == null) missing.add("oldGuesses");
         if (newGuesses == null) missing.add("newGuesses");
         if (!missing.isEmpty()) {
             String msg = "missing parameters " + String.join(", ", missing);
-            context.log("match returns Bad Request: " + msg);
             return Response.status(Response.Status.BAD_REQUEST)
                            .entity(msg)
                            .build();
@@ -64,15 +54,12 @@ public class HangmanResource {
         String oldMatch = hangman.match(oldGuesses);
         if (!oldMatch.equals(oldPattern)) {
             String msg = "oldPattern, oldGuesses don't match the word";
-            context.log("match returns Bad Request: oldMatch=" + oldMatch
-                        + ", " + msg);
             return Response.status(Response.Status.BAD_REQUEST)
                            .entity(msg)
                            .build();
         }
 
         String newMatch = hangman.match(oldGuesses + newGuesses);
-        context.log("match returns OK: " + newMatch);
         return Response.ok(newMatch).build();
     }
 }
