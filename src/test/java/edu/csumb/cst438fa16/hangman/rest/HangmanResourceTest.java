@@ -9,8 +9,10 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
@@ -20,12 +22,13 @@ import javax.ws.rs.core.Response;
  * https://jersey.java.net/documentation/latest/test-framework.html
  * https://jersey.java.net/apidocs/latest/jersey/index.html
  */
+@RunWith(MockitoJUnitRunner.class)
 public class HangmanResourceTest extends JerseyTest {
     @Mock private Hangman hangman;
 
     @Override
     protected Application configure() {
-        MockitoAnnotations.initMocks(this);
+        //MockitoAnnotations.initMocks(this);
         return new ResourceConfig(HangmanResource.class)
             .register(new AbstractBinder() {
                 @Override protected void configure() {
