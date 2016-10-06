@@ -11,7 +11,6 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Application;
@@ -28,7 +27,6 @@ public class HangmanResourceTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        //MockitoAnnotations.initMocks(this);
         return new ResourceConfig(HangmanResource.class)
             .register(new AbstractBinder() {
                 @Override protected void configure() {
