@@ -1,6 +1,8 @@
 package edu.csumb.cst438fa16.hangman.rest;
 
-import javax.ws.rs.core.Application;
+import edu.csumb.cst438fa16.hangman.Hangman;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
+import org.glassfish.jersey.server.ResourceConfig;
 import javax.ws.rs.ApplicationPath;
 
 /**
@@ -10,5 +12,15 @@ import javax.ws.rs.ApplicationPath;
  * http://stackoverflow.com/a/26721737
  */
 @ApplicationPath("rest")
-public class HangmanApplication extends Application {
+public class HangmanApplication extends ResourceConfig {
+    public HangmanApplication() {
+        register(HangmanResource.class);
+        // See: https://jersey.java.net/documentation/latest/ioc.html
+        register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bindFactory(HangmanFactory.class).to(Hangman.class);
+            }
+        });
+    }
 }
