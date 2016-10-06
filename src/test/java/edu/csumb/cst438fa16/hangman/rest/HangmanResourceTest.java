@@ -3,6 +3,7 @@ package edu.csumb.cst438fa16.hangman.rest;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.*;
 
 import edu.csumb.cst438fa16.hangman.Hangman;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -49,6 +50,7 @@ public class HangmanResourceTest extends JerseyTest {
         Response response = webTarget.request().get();
         assertThat(response.getStatus(),
                    equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+        verify(hangman, never()).match(anyString());
     }
 
     @Test
