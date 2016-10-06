@@ -3,9 +3,10 @@ package edu.csumb.cst438fa16.hangman.rest;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
-import org.junit.*;
+import org.junit.Test;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
@@ -20,30 +21,12 @@ public class HangmanResourceTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        return new ResourceConfig(HangmanResource.class);
-    }
-
-    // setup() and teardown() are copied from
-    // http://apmblog.dynatrace.com/2014/02/25/how-stable-are-your-unit-tests-best-practices-to-raise-test-automation-quality/
-    // (which also suggests a better solution)
-    private String oldWord;
-
-    static private final String HANGMAN_WORD_PROPERTY_KEY =
-        HangmanResource.HANGMAN_WORD_PROPERTY_KEY;
-
-    @Before
-    public void setup() {
-        // setProperty returns the old value of the property
-        oldWord = System.setProperty(HANGMAN_WORD_PROPERTY_KEY, WORD);
-    }
-
-    @After
-    public void teardown() {
-        if (oldWord == null) {
-            System.clearProperty(HANGMAN_WORD_PROPERTY_KEY);
-        } else {
-            System.setProperty(HANGMAN_WORD_PROPERTY_KEY, oldWord);
-        }
+        return new ResourceConfig(HangmanResource.class)
+            .register(new AbstractBinder() {
+                @Override protected void configure() {
+                    bind(WORD).to(String.class).named("word");
+                }
+            });
     }
 
     @Test
