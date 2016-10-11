@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("")
 public class HangmanResource {
-    @Inject Hangman hangman;
+    @Inject private Hangman hangman;
 
     @GET
     @Path("/start")
