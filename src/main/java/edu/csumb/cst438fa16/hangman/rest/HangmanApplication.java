@@ -20,9 +20,10 @@ public class HangmanApplication extends ResourceConfig {
         // See: https://jersey.java.net/documentation/latest/ioc.html
         register(new AbstractBinder() {
             @Override protected void configure() {
-                String word = System.getProperty(HANGMAN_WORD_PROPERTY_KEY,
-                                                 HANGMAN_WORD_DEFAULT);
-                bind(word).to(String.class).named("word");
+                String productionWord =
+                    System.getProperty(HANGMAN_WORD_PROPERTY_KEY,
+                                       HANGMAN_WORD_DEFAULT);
+                bind(productionWord).to(String.class).named("word");
             }
         });
     }

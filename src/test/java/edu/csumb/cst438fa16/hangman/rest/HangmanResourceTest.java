@@ -17,14 +17,14 @@ import javax.ws.rs.core.Response;
  * https://jersey.java.net/apidocs/latest/jersey/index.html
  */
 public class HangmanResourceTest extends JerseyTest {
-    static private final String WORD = "cat";  // the word used in this test
+    static private final String TEST_WORD = "cat";
 
     @Override
     protected Application configure() {
         return new ResourceConfig(HangmanResource.class)
             .register(new AbstractBinder() {
                 @Override protected void configure() {
-                    bind(WORD).to(String.class).named("word");
+                    bind(TEST_WORD).to(String.class).named("word");
                 }
             });
     }
