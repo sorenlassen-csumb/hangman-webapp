@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("")
 public class HangmanResource {
-    @Inject @Named("word") String word;
+    @Inject @Named("word") private String word;
 
     private Hangman getHangman() {
         return new Hangman(word);
