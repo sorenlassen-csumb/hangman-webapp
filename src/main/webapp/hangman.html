@@ -2,6 +2,7 @@
 <head>
 <title>Hangman</title>
 <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+<script src="js/rest.js"></script>
 </head>
 <body>
 
@@ -16,26 +17,26 @@ function guess() {
   var oldPattern = $("#pattern").text();
   var oldGuesses = $("#oldGuesses").text();
   var newGuesses = $("#newGuesses").val();
-  $.get("/rest/match",
-        { oldPattern: oldPattern, oldGuesses: oldGuesses, newGuesses: newGuesses },
-        function(newPattern) {
-          $("#pattern").text(newPattern);
-          $("#oldGuesses").append(newGuesses);
-          $("#newGuesses").val("");
-          $("#newGuesses").focus();
-        })
-   .fail(function(jqXHR, textStatus, errorThrown) {
-           $("#fail").text(textStatus + ": " + errorThrown);
-         });
+  rest_match(
+    { oldPattern: oldPattern, oldGuesses: oldGuesses, newGuesses: newGuesses },
+    function(newPattern) {
+      $("#pattern").text(newPattern);
+      $("#oldGuesses").append(newGuesses);
+      $("#newGuesses").val("");
+      $("#newGuesses").focus();
+    },
+    function(failure) {
+      $("#fail").text(failure);
+    });
 };
 
 $(function() {
-  $.get("/rest/start",
-        function(thestart) {
-          $("#pattern").text(thestart);
-          $("#submit").click(guess);
-          $("#newGuesses").focus();
-        });
+  rest_start(
+    function(thestart) {
+      $("#pattern").text(thestart);
+      $("#submit").click(guess);
+      $("#newGuesses").focus();
+    });
 });
 </script>
 
