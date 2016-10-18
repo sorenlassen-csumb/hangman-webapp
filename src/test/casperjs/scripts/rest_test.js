@@ -8,7 +8,6 @@ casper.test.begin('assertEquals() test', 1, function(test) {
 });
 
 casper.test.begin('rest_start test', 1, function(test) {
-    //phantom.injectJs('/tmp/jquery-3.1.0.js');
     casper.start().then(function() {
         this.setContent('<div id="pattern"></div>');
         rest_start(function(pattern) {

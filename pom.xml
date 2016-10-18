@@ -94,7 +94,6 @@
           </execution>
         </executions>
         <configuration>
-          <!-- <casperExecPath>/tmp/err.sh</casperExecPath> -->
           <casperExecPath>${project.build.directory}/casperjs-master/bin/casperjs</casperExecPath>
           <includes>${project.build.directory}/jquery-${jquery.version}.js,src/main/webapp/js/rest.js</includes>
         </configuration>
