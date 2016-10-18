@@ -1,3 +1,7 @@
+// Global variable, which is the empty string in production so that
+// URLs are relative, and is overridden in tests.
+var BaseURL = "";
+
 // Calls rest/match webapp REST endpoint.
 // args is a JavaScript object with fields oldPattern, oldGuesses, newGuesses
 // corresponding to the rest/match query parameters.
