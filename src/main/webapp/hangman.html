@@ -3,6 +3,7 @@
 <title>Hangman</title>
 <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
 <script src="js/rest.js"></script>
+<script src="js/hangman.js"></script>
 </head>
 <body>
 
@@ -11,34 +12,6 @@
 <div>Letter? <input id="newGuesses" type="text" />
              <button id="submit">Submit</button></div>
 <div id="fail"></div>
-
-<script>
-function guess() {
-  var oldPattern = $("#pattern").text();
-  var oldGuesses = $("#oldGuesses").text();
-  var newGuesses = $("#newGuesses").val();
-  rest_match(
-    { oldPattern: oldPattern, oldGuesses: oldGuesses, newGuesses: newGuesses },
-    function(newPattern) {
-      $("#pattern").text(newPattern);
-      $("#oldGuesses").append(newGuesses);
-      $("#newGuesses").val("");
-      $("#newGuesses").focus();
-    },
-    function(failure) {
-      $("#fail").text(failure);
-    });
-};
-
-$(function() {
-  rest_start(
-    function(thestart) {
-      $("#pattern").text(thestart);
-      $("#submit").click(guess);
-      $("#newGuesses").focus();
-    });
-});
-</script>
 
 </body>
 </html>
