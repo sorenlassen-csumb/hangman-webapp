@@ -9,8 +9,10 @@
   <url>http://maven.apache.org</url>
   <properties>
     <jersey.version>2.23.2</jersey.version>
+    <jetty.version>9.3.12.v20160915</jetty.version>
     <jquery.version>3.1.0</jquery.version>
-    <jasmine-jquery.version>2.0.3</jasmine-jquery.version>
+    <jasmine-ajax.version>3.2.0</jasmine-ajax.version>
+    <!-- <jasmine-jquery.version>2.0.3</jasmine-jquery.version> -->
   </properties>
   <dependencies>
     <dependency>
@@ -35,12 +37,20 @@
       <artifactId>jquery</artifactId>
       <version>${jquery.version}</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.webjars/jasmine-ajax -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>jasmine-ajax</artifactId>
+      <version>${jasmine-ajax.version}</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/org.webjars/jasmine-jquery -->
+    <!--
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>jasmine-jquery</artifactId>
       <version>${jasmine-jquery.version}</version>
     </dependency>
+    -->
   </dependencies>
   <build>
     <finalName>hangman-webapp</finalName>
@@ -72,14 +82,15 @@
 	  <jsTestSrcDir>src/test/webapp/js</jsTestSrcDir>
           <preloadSources>
             <source>webjars/jquery/${jquery.version}/jquery.js</source>
-            <source>webjars/jasmine-jquery/${jasmine-jquery.version}/jasmine-jquery.js</source>
+            <source>webjars/jasmine-ajax/${jasmine-ajax.version}/mock-ajax.js</source>
+            <!-- <source>webjars/jasmine-jquery/${jasmine-jquery.version}/jasmine-jquery.js</source> -->
           </preloadSources>
         </configuration>
       </plugin>
       <plugin>
 	<groupId>org.eclipse.jetty</groupId>
 	<artifactId>jetty-maven-plugin</artifactId>
-	<version>9.3.11.v20160721</version>
+	<version>${jetty.version}</version>
         <!-- http://maven.apache.org/surefire/maven-failsafe-plugin/usage.html#Using_jetty_and_maven-failsafe-plugin -->
         <configuration>
           <scanIntervalSeconds>10</scanIntervalSeconds>
