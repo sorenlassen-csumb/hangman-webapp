@@ -3,6 +3,7 @@ package edu.csumb.cst438fa16.hangman.rest;
 import edu.csumb.cst438fa16.hangman.Hangman;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -16,19 +17,12 @@ import javax.ws.rs.core.Response;
  */
 @Path("")
 public class HangmanResource {
-    static final String HANGMAN_WORD_DEFAULT = "cat";
-    static final String HANGMAN_WORD_PROPERTY_KEY = "hangman.word";
-
-    private static Hangman getHangman() {
-        String word = System.getProperty(HANGMAN_WORD_PROPERTY_KEY,
-                                         HANGMAN_WORD_DEFAULT);
-        return new Hangman(word);
-    }
+    @Inject private Hangman hangman;
 
     @GET
     @Path("/start")
     public String start() {
-        String pattern = getHangman().start();
+        String pattern = hangman.start();
         return pattern;
     }
 
@@ -50,7 +44,6 @@ public class HangmanResource {
                            .build();
         }
 
-        Hangman hangman = getHangman();
         String oldMatch = hangman.match(oldGuesses);
         if (!oldMatch.equals(oldPattern)) {
             String msg = "oldPattern, oldGuesses don't match the word";
