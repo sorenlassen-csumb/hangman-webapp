@@ -2,10 +2,16 @@ package edu.csumb.cst438fa16.hangman.rest;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import static org.mockito.Mockito.*;
 
+import edu.csumb.cst438fa16.hangman.Hangman;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
-import org.junit.*;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
@@ -15,35 +21,20 @@ import javax.ws.rs.core.Response;
  * https://jersey.java.net/documentation/latest/test-framework.html
  * https://jersey.java.net/apidocs/latest/jersey/index.html
  */
+@RunWith(MockitoJUnitRunner.class)
 public class HangmanResourceTest extends JerseyTest {
     static private final String WORD = "cat";  // the word used in this test
 
+    @Spy private Hangman hangman = new Hangman(WORD);
+
     @Override
     protected Application configure() {
-        return new ResourceConfig(HangmanResource.class);
-    }
-
-    // setup() and teardown() are copied from
-    // http://apmblog.dynatrace.com/2014/02/25/how-stable-are-your-unit-tests-best-practices-to-raise-test-automation-quality/
-    // (which also suggests a better solution)
-    private String oldWord;
-
-    static private final String HANGMAN_WORD_PROPERTY_KEY =
-        HangmanResource.HANGMAN_WORD_PROPERTY_KEY;
-
-    @Before
-    public void setup() {
-        // setProperty returns the old value of the property
-        oldWord = System.setProperty(HANGMAN_WORD_PROPERTY_KEY, WORD);
-    }
-
-    @After
-    public void teardown() {
-        if (oldWord == null) {
-            System.clearProperty(HANGMAN_WORD_PROPERTY_KEY);
-        } else {
-            System.setProperty(HANGMAN_WORD_PROPERTY_KEY, oldWord);
-        }
+        return new ResourceConfig(HangmanResource.class)
+            .register(new AbstractBinder() {
+                @Override protected void configure() {
+                    bind(hangman).to(Hangman.class);
+                }
+            });
     }
 
     @Test
@@ -78,5 +69,9 @@ public class HangmanResourceTest extends JerseyTest {
                                              .queryParam("newGuesses", "abc");
         String thematch = webTarget.request().get(String.class);
         assertThat(thematch, equalTo("ca."));
+        // Illustrate verification
+        verify(hangman, times(2)).match(anyString());
+        verify(hangman, times(1)).match("");
+        verify(hangman, never()).match("abcd");
     }
 }
